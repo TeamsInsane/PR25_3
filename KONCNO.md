@@ -1,6 +1,6 @@
 ## Uvod
 
-Do končnega poročila smo zbrali vse relevantne podatke ter jih predstavili s pomočjo različnih statističnih vizualizacij. Z njimi smo analizirali tudi vpliv posameznih atributov na pojavnost prometnih nesreč.
+V tem projektu smo analizirali podatke o premitnih nesrečah v Sloveniji z uporabo različnih statističnih metod in vizualizacij. Osredotočili smo se na iskanje vplivnih dejavnikov nesreč in resnost prometnih nesreč ter pripravili interaktivno aplikacijo s pomočjo streamlit, ki omogoča vpogled v podatke in iporabo napovednega modela za oceno tveganja.
 
 ## Zajemanje podatkov
 
@@ -10,7 +10,7 @@ Občine slovenije in njihove lokacije smo prodobili preko na spletni strani  [si
 
 ## Vizualizacije
 
-za branje podatkov v Pythonu smo uporabili `pandas` knjižnico, grafe pa smo risali z `matplotlib` in `plotly`. 
+za branje podatkov v Pythonu smo uporabili `pandas` knjižnico, grafe pa smo risali z `matplotlib`, `seaborn` ter`plotly`. Napovedne modele smo implementirali z uporabo `scikit-learn`.
 
 
 ## Vpliv alkohola na prometne nesreče
@@ -38,7 +38,9 @@ Za prometne nesreče z alkotestom smo si pogledali še, koliko promila so imeli 
 
 ![Prometne nesreče z alkotestom po urah](alkotestUra.png)
 
-Porazdelitev spominja na obrnjeno zvonasto obliko: največ prometnih nesreč se zgodi zgodaj zjutraj, verjetno zaradi tega, ker se ljudje takrat vračajo domov iz dogodkov in pa pozno zvečer, verjetno zaradi istega razloga.
+Porazdelitev spominja na obrnjeno zvonasto krivuljo - višje vrednosti promilov so zabeležene zgodaj zjutraj in pozno zvečer, kar je verjetno povezano s tem, da se ljudje v teh urah vračajo z družavnih dogodkov.
+
+Če iz analize izključimo primere z 0.0 promila ali manjkajočo vrednostjo, dobimo nekoliko drugačno sliko. Porazdelitev je še vedno podobna, a manj izrazito zvonasto in rahlo bolj enakomerna.
 
 
 ## Število nesreč glede na uro
@@ -90,8 +92,6 @@ Največ žrtev je kolesarjev in pešcev, kar nas je zelo presenetilo, da je peš
 
 ## Primerjava nesreč po starosti
 
-FIX
-
 Največ nesreč povzročajo mladi vozniki, saj imajo najmanj izkušenj in vozijo preko svojih meja sposobnosti. Nato pa število nesreč z letom bolj kakor ne pada.
 
 ![Nesreče po starosti](poStarosti.png)
@@ -126,7 +126,21 @@ Bolj podrobno smo pogledali še tiste tuje povzročitelje in ugotovili in nam je
 Zadnje smo se še vprašali ali lahko na podlagi določenih atributov napovemo, ali bo nesreča hujša ali ne. Uporabili smo logistično regresijo in dobili AUC = 0.58, kar pomeni, da ločevanje ni zelo zanesljivo, ampak vseeno boljše od naključnega (AUC = 0.5).
 
 
-## Naivni Bayes
-DODAT GRAPH
+## Interaktivna aplikacija (Streamlit)
 
-Naredili smo interaktivno spletno stran, kjes vneseš podatke (vreme, vrsta ceste, dan v tednu, tip nesreče, ura nesreče, vrednost alkotesta, stanje vozlišča). Model na podlagi Random Forest napove, kolikšna je verjenost, da se bo tam zgodila prometna nesreča. 
+Aplikacija omogoča anlizo prometnih nesreč v Sloveniji ter napovedovanje njihove resnosti s pomočjo strojnega učenja. Vključuje naslednje funkcionalnosti:
+- **Napoved resnosti nesreče:** Uporabnik vnese podatke o hipotetični nesreči, aplikacija pa s pomočjo izbranega modela napove klasifikacijo nesreče.
+- **Naivni Bayes po vrsti ceste:** Predstavlja, kako se resnost prometnih nesreč razlikuje glede na vrsto ceste.
+- **Zemljevid smrti po letih:** Interaktivni zemljevid s prikazom lokacij vseh smrtnih nesreč med letoma 2014 in 2023.
+- **Zemljevid prometnih nesreč:** Vizualizacija nesreč glede na izbrane pogoje.
+- **Alkohol in vrste nesreč:** Analiza povprečnih vrednosti alkohola po tipu nesreče.
+
+
+## Zaključek
+
+Analiza je pokazala, da imajo nekateri dejavniki, kot sta prisotnost alkohola in ura dneva, pomemben vpliv na resnost prometnih nesreč. Ugotovitve vključujejo:
+- Prometne nesreče so pogostejše v nočnih urah.
+- Največ nesreč se zgodi v popoldanskem času, zlasti okoli 15. ure, ko je promet najgostejši.
+- Geografska porazdelitev nesreč v veliki meri sledi gostoti prebivalstva in prometno obremenjenim cestam.
+- Največ nesreč povzročijo mladi vozniki.
+- Napovedovanje resnosti nesreče je mogoče, vendar natančnost napovedi še ni zadostna za zanesljivo uporabo v praksi.
