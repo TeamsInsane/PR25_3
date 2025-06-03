@@ -98,11 +98,6 @@ if submit:
 
     st.bar_chart(proba_df.set_index("Klasifikacija"))
 
-
-
-with open("categorical_nb_model.pkl", "rb") as f:
-    model = pickle.load(f)
-
 # Naivni model
 
 st.markdown("""
