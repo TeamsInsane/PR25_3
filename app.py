@@ -216,26 +216,16 @@ st.plotly_chart(fig, use_container_width=True)
 koledar_data = data.copy()
 koledar_data["DatumPN"] = pd.to_datetime(koledar_data["DatumPN"])
 
-# Koledar
 st.header("Koledar prometnih nesreč po dnevih")
 st.write("Izberi leto in prikaže se število nesreč za vsak dan v tem letu.")
 
-# Zdaj lahko varno uporabljamo .dt.year
 leta = sorted(koledar_data["DatumPN"].dt.year.unique())
 izbrano_leto = st.selectbox("Izberi leto", leta)
-
-# Filtriramo po izbranem letu
 leto_df = koledar_data[koledar_data["DatumPN"].dt.year == izbrano_leto]
-
-# Seštej po datumu
 daily_counts = leto_df["DatumPN"].value_counts().reset_index()
 daily_counts.columns = ["Datum", "Št_nesreč"]
-
-# Dodamo še stolpce za mesec in dan
 daily_counts["Mesec"] = daily_counts["Datum"].dt.month
 daily_counts["Dan"] = daily_counts["Datum"].dt.day
-
-# Interaktivna heatmap
 fig = px.density_heatmap(
     daily_counts,
     x="Dan",
@@ -262,7 +252,6 @@ st.header("Povprečna vrednost alkotesta glede na tip nesreče")
 
 alko_data = data.copy()
 
-# Odstrani vrstice, kjer je NaN v "VrednostAlkotesta" ali "TipNesrece"
 alko_data = alko_data.dropna(subset=["VrednostAlkotesta", "TipNesrece"])
 alko_data["VrednostAlkotesta"] = alko_data["VrednostAlkotesta"].str.replace(',', '.')
 alko_data["VrednostAlkotesta"] = pd.to_numeric(alko_data["VrednostAlkotesta"], errors='coerce')
