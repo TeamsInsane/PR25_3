@@ -128,6 +128,8 @@ Zadnje smo se še vprašali ali lahko na podlagi določenih atributov napovemo, 
 
 ## Interaktivna aplikacija (Streamlit)
 
+Link: https://pr2503.streamlit.app/
+
 Aplikacija omogoča anlizo prometnih nesreč v Sloveniji ter napovedovanje njihove resnosti s pomočjo strojnega učenja. Vključuje naslednje funkcionalnosti:
 - **Napoved resnosti nesreče:** Uporabnik vnese podatke o hipotetični nesreči, aplikacija pa s pomočjo izbranega modela napove klasifikacijo nesreče.
 - **Naivni Bayes po vrsti ceste:** Predstavlja, kako se resnost prometnih nesreč razlikuje glede na vrsto ceste.
