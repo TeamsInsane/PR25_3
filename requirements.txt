@@ -1,0 +1,7 @@
+streamlit
+pandas
+plotly
+calplot
+pyproj
+scikit-learn
+pickle
