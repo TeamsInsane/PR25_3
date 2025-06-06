@@ -45,7 +45,7 @@ def train_models(data):
     models = {
         "RandomForest": RandomForestClassifier(n_estimators=100, random_state=42),
         "DecisionTree": DecisionTreeClassifier(),
-        "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric="mlogloss")
+        "XGBoost": XGBClassifier(eval_metric="mlogloss")
     }
 
     for name, model in models.items():

@@ -202,7 +202,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 # Koledar
 koledar_data = data.copy()
-koledar_data["DatumPN"] = pd.to_datetime(koledar_data["DatumPN"])
+koledar_data["DatumPN"] = pd.to_datetime(koledar_data["DatumPN"], dayfirst=True)
 
 st.header("Koledar prometnih nesreč po dnevih")
 st.write("Izberi leto in prikaže se število nesreč za vsak dan v tem letu.")
