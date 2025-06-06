@@ -36,8 +36,6 @@ data["lat"] = lats
 
 # Model
 
-models, label_encoders, y_encoder = train_models(data)
-
 st.markdown("""
 # Napovedovalec resnosti prometne nesreče
 
@@ -71,7 +69,14 @@ with st.form("nesreca_form"):
 
     submit = st.form_submit_button("Napovej")
 
+@st.cache_resource
+def load_models():
+    return train_models(data)
+
 if submit:
+    with st.spinner("Treniranje in nalaganje modelov..."):
+        models, label_encoders, y_encoder = load_models()
+
     input_dict = {
             "UraPN": [ura],
             "DanVTednu": [dan],
