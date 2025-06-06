@@ -7,14 +7,37 @@ from pyproj import Transformer
 from main_map import get_main_map
 import calplot
 import plotly.express as px
+from trainModels import train_models
+
+# Data
+
+years = range(2014, 2024)
+dataFrames = []
+
+for year in years:
+    dataFrame = pd.read_csv(f"./data/pn{year}.csv", encoding="cp1250", delimiter=";")
+    dataFrame["Year"] = year
+    dataFrames.append(dataFrame)
+    
+data = pd.concat(dataFrames, ignore_index=True)
+
+alko_raw = data["VrednostAlkotesta"].astype(str).str.replace(",", ".").str.strip()
+alko = pd.to_numeric(alko_raw, errors="coerce").fillna(0)
+
+data["x"] = pd.to_numeric(data["GeoKoordinataX"], errors="coerce")
+data["y"] = pd.to_numeric(data["GeoKoordinataY"], errors="coerce")
+data = data.dropna(subset=["x", "y"])
+
+transformer = Transformer.from_crs("EPSG:3912", "EPSG:4326", always_xy=True)
+
+lons, lats  = transformer.transform(data["y"].values, data["x"].values)
+
+data["lon"] = lons
+data["lat"] = lats
 
 # Model
 
-with open("label_encoders.pkl", "rb") as f:
-    label_encoders = pickle.load(f)
-
-with open("y_encoder.pkl", "rb") as f:
-    y_encoder = pickle.load(f)
+models, label_encoders, y_encoder = train_models()
 
 st.markdown("""
 # Napovedovalec resnosti prometne nesreče
@@ -78,12 +101,7 @@ if submit:
         else:
             user_df[col] = pd.to_numeric(user_df[col], errors="coerce")
 
-
-    
-    with open(f"model_{model_name}.pkl", "rb") as f:
-        model = pickle.load(f)
-
-
+    model = models[model_name]
 
     prediction = model.predict(user_df)
     klasifikacija = y_encoder.inverse_transform(prediction)[0]
@@ -106,30 +124,6 @@ st.markdown("""
 Spodnja aplikacija predstavlja, kako se resnost prometnih nesreč razlikuje glede na vrsto ceste. Uporabljen je preprost model (Naivni Bayes), ki za vsak tip ceste izračuna verjetnosti za različne izide nesreče.
 Izberi leta, ki te zanimajo, in v tabeli se prikažejo verjetnosti za posamezne kategorije. To lahko pomaga pri razumevanju, katere ceste so bolj tvegane in kje se zgodijo hujše nesreče.
 """)
-
-years = range(2014, 2024)
-dataFrames = []
-
-for year in years:
-    dataFrame = pd.read_csv(f"./data/pn{year}.csv", encoding="cp1250", delimiter=";")
-    dataFrame["Year"] = year
-    dataFrames.append(dataFrame)
-    
-data = pd.concat(dataFrames, ignore_index=True)
-
-alko_raw = data["VrednostAlkotesta"].astype(str).str.replace(",", ".").str.strip()
-alko = pd.to_numeric(alko_raw, errors="coerce").fillna(0)
-
-data["x"] = pd.to_numeric(data["GeoKoordinataX"], errors="coerce")
-data["y"] = pd.to_numeric(data["GeoKoordinataY"], errors="coerce")
-data = data.dropna(subset=["x", "y"])
-
-transformer = Transformer.from_crs("EPSG:3912", "EPSG:4326", always_xy=True)
-
-lons, lats  = transformer.transform(data["y"].values, data["x"].values)
-
-data["lon"] = lons
-data["lat"] = lats
 
 years = sorted(data['Year'].dropna().unique())
 selected_years = st.multiselect("Izberi leto za NB:", years, default=years)
