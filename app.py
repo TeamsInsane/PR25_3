@@ -5,7 +5,6 @@ from nb_module import compute_naive_bayes_table
 from map_smrti import get_map
 from pyproj import Transformer
 from main_map import get_main_map
-import calplot
 import plotly.express as px
 from trainModels import train_models
 
