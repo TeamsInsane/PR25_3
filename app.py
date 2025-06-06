@@ -74,7 +74,7 @@ def load_models():
     return train_models(data)
 
 if submit:
-    with st.spinner("Treniranje in nalaganje modelov..."):
+    with st.spinner("Treniranje in nalaganje modelov"):
         models, label_encoders, y_encoder = load_models()
 
     input_dict = {
