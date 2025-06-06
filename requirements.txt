@@ -5,3 +5,4 @@ calplot
 pyproj
 scikit-learn
 geopandas
+xgboost
