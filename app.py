@@ -129,7 +129,7 @@ selected_years = st.multiselect("Izberi leto za NB:", years, default=years)
 filtered_data = data[data["Year"].isin(selected_years)]
 result = compute_naive_bayes_table(filtered_data.copy())
 
-formatted_result = result.applymap(lambda x: f"{x*100:.2f}%")
+formatted_result = result.map(lambda x: f"{x*100:.2f}%")
 
 st.dataframe(formatted_result, height=426)
 
