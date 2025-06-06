@@ -37,7 +37,7 @@ data["lat"] = lats
 
 # Model
 
-models, label_encoders, y_encoder = train_models()
+models, label_encoders, y_encoder = train_models(data)
 
 st.markdown("""
 # Napovedovalec resnosti prometne nesreče
